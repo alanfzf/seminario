@@ -1,0 +1,25 @@
+{% extends "resources.html" %}
+
+{% block resource_title %}
+Hospitales <i class="bi bi-hospital"></i>
+{% endblock resource_title %}
+
+{% block add_button %}
+<a class="btn btn-primary" href="{% url 'resources:hospital_create' %}">Crear hospital <i class="bi bi-plus-lg"></i></a>
+{% endblock add_button %}
+
+<!-- contenido de la tabla -->
+{% block table_content %}
+{% for hospital in hospitales %}
+<tr>
+  <th scope="row">{{hospital.id}}</th>
+  <td>{{hospital.nombre}}</td>
+  <td>
+    <a class="btn btn-info" href="{% url 'resources:hospital_update' hospital.id %}"><i class="bi bi-pencil-square"></i></a>
+  </td>
+  <td>
+    <button type='button' class="btn btn-danger btnDelete" data-url='{% url 'resources:hospital_delete' hospital.id %}'><i class="bi bi-trash3"></i></button>
+  </td>
+</tr>
+{% endfor %}
+{% endblock table_content %}

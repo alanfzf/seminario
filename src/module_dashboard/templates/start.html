@@ -1,0 +1,135 @@
+{% extends "menu.html" %}
+
+{% block head %}
+  {% load static %}
+<script src="{% static 'lib/node_modules/highcharts/highcharts.js' %}"></script>
+<script src="{% static 'lib/node_modules/highcharts/modules/exporting.js' %}"></script>
+<script src="{% static 'lib/node_modules/highcharts/modules/export-data.js' %}"></script>
+<script src="{% static 'lib/node_modules/highcharts/modules/accessibility.js' %}"></script>
+{% endblock head %}
+
+{% block main_content %}
+<div class="container">
+  <h1>Bienvenido <strong>{{ user.username }}</strong></h1>
+  <hr>
+  <div id="container-servicios" class="my-4"></div>
+  <div id="container-tiempo" class="my-4"></div>
+</div>
+
+<script type="application/javascript">
+
+
+const atendidos = Array.from({ length: 30}, (_, a)=>{
+  const min = 0, max = 10;
+  const random = Math.floor(Math.random() * (max - min + 1)) + min;
+  return random
+})
+
+Highcharts.chart('container-tiempo', {
+  title: {
+    text: 'Servicios atendidos mes actual',
+    align: 'left'
+  },
+  credits: {
+    enabled: false
+  },
+  yAxis: {
+    title: {
+      text: 'Cantidad de servicios'
+    }
+  },
+
+  legend: {
+    layout: 'vertical',
+    align: 'right',
+    verticalAlign: 'middle'
+  },
+
+  plotOptions: {
+    series: {
+      label: { connectorAllowed: false },
+      pointStart: 2023 
+    }
+  },
+
+  series: [{
+    name: 'Servicios atendidos',
+    showInLegend: false,
+    data: atendidos
+  }],
+
+  responsive: {
+    rules: [{
+      condition: { maxWidth: 500 },
+      chartOptions: {
+        legend: {
+          layout: 'horizontal',
+          align: 'center',
+          verticalAlign: 'bottom'
+        }
+      }
+    }]
+  }
+
+});
+
+
+Highcharts.chart('container-servicios', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: true,
+    type: 'pie'
+  },
+  title: {
+    text: 'Tipos de servicios atendidos',
+    align: 'left'
+  },
+  credits: {
+    enabled: false
+  },
+  tooltip: {
+    pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+      }
+    }
+  },
+  series: [{
+    name: 'Servicios',
+    colorByPoint: true,
+    data: [
+      {
+        name: 'Maternidad',
+        y: 5
+      },
+      {
+        name: 'Rescate acuatico',
+        y: 15
+      },
+      {
+        name: 'Accidente de transito',
+        y: 60
+      },
+      {
+        name: 'Accidente de trabajo',
+        y: 20
+      },
+
+    ]
+  }]
+});
+</script>
+
+{% endblock main_content %}

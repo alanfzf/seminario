@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="sticky-top navbar-header">
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'dashboard:index' %}">
+        {% load static %}
+        <img src="{% static '/img/logo.png' %}" width="45" height="45" class="d-inline-block align-middle"> <strong> B. Voluntarios Cobán</strong>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
+        <ul class="navbar-nav flex-grow-1">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'reports:index' %}"><i class="bi bi-clipboard2-pulse-fill"></i> Reportes</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:index' %}"><i class="bi bi-person-fill"></i> Personal</a>
+          </li>
+
+          <!-- recursos -->
+          <li class="nav-item dropdown">
+            <button class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-car-front-fill"></i> Recursos
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark">
+              <li><a class="dropdown-item" href="{% url 'resources:services' %}">Servicios</a></li>
+              <li><a class="dropdown-item" href="{% url 'resources:vehicles' %}">Vehiculos</a></li>
+              <li><a class="dropdown-item" href="{% url 'resources:hospitals' %}">Hospitales</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard:about' %}"><i class="bi bi-info-circle-fill"></i> Acerca de</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link disabled text-secondary">Bienvenido @{{user.username}}!</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'authenticate:logout' %}">Cerrar sesión <i class="bi bi-box-arrow-left"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  {% block main_content %}
+  {% endblock main_content %}
+</main>
+
+<footer class="py-2 bg-dark mt-4 footer">
+  <ul class="nav justify-content-center pb-3">
+    <li class="nav-item"><a href="https://github.com/alanfvn" target="_blank" class="nav-link px-2 text-white">Creditos</a></li>
+  </ul>
+  <p class="text-center text-white"><strong>© {% now "Y" %}</strong> Alan David González López</p>
+</footer>
+
+
+{% endblock content %}

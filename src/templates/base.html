@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bomberos Voluntarios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <!-- favicon -->
+    <link rel="icon" href="{% static 'favicon.ico' %}">
+    <!-- custom css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- bootstrap-5 -->
+    <link rel="stylesheet" href="{% static 'lib/node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'lib/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- bootstrap-5 icons -->
+    <link rel="stylesheet" href="{% static 'lib/node_modules/bootstrap-icons/font/bootstrap-icons.min.css' %}">
+    <!-- jquery -->
+    <script src="{% static '/lib/node_modules/jquery/dist/jquery.min.js' %}"></script>
+    <!-- mine scripts -->
+    <script src="{% static 'js/util.js' %}"></script>
+    <!-- other scripts -->
+    {% block head %}
+    {% endblock head %}
+  </head>
+  <body>
+    <div class="layout">
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+    {% block user_scripts %}
+    {% endblock user_scripts %}
+  </body>
+</html>

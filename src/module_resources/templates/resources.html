@@ -1,0 +1,46 @@
+{% extends "menu.html" %}
+
+{% load static %}
+{% block head %}
+<!-- data tables -->
+<script src="{% static 'lib/node_modules/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}">
+<!-- logica de la vista -->
+<script type="text/javascript"> window.CSRF_TOKEN = "{{ csrf_token }}"</script>
+<script src="{% static 'js/logic.js' %}"></script>
+{% endblock head %}
+
+{% block main_content %}
+<div class="container">
+  <h1 class="fw-bold">{% block resource_title %}{% endblock resource_title %}</h1>
+  <hr>
+  <!-- area de alertas -->
+  <div id='alert-area' class="alert alert-warning d-none" role="alert">
+    <strong>Ha ocurrido un error:</strong>
+    <div id='alert-content' class="div"></div>
+  </div>
+
+  <!-- area de botones -->
+  <div class="buttons my-4">
+    {% block add_button %}{% endblock add_button %}
+    <a href="{% url 'dashboard:index' %}" class="btn btn-secondary">Volver al inicio <i class="bi bi-arrow-return-left"></i></a>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped" id='tabla'>
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col" class="w-75">Nombre</th>
+          <th scope="col">Editar</th>
+          <th scope="col">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% block table_content %}{% endblock table_content %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock main_content %}

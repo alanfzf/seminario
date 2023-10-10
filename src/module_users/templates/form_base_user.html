@@ -1,0 +1,25 @@
+{% extends "menu.html" %}
+
+{% block main_content %}
+<div class="container">
+  <form method="post">
+    <div class="card">
+      <div class="card-header">
+        <h2>{% block form_user_title %}{% endblock form_user_title %}</h2> 
+      </div>
+      <div class="card-body">
+        {% csrf_token %}
+        {{form.as_p}}
+      </div>
+      <div class="card-footer">
+        <div class="buttons">
+          <button class="btn btn-primary" type="submit">
+            {% block form_user_btn %}{% endblock form_user_btn %}
+          </button>
+          <a class="btn btn-secondary" href="{% url 'users:index' %}">Cancelar <i class="bi bi-arrow-return-left"></i></a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock main_content %}

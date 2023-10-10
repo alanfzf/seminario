@@ -1,0 +1,22 @@
+{% extends "menu.html" %}
+
+{% block main_content %}
+<div class="container">
+  <form method="POST">
+    <div class="card">
+      <div class="card-header">
+        <h2>{% block titulo %}{% endblock titulo %}</h2>
+      </div>
+      <div class="card-body">
+        {% csrf_token %}
+        {{form.as_p}}
+      </div>
+      <div class="card-footer">
+        <button type='submit' class="btn btn-primary"> {% block titulo_boton %}{% endblock titulo_boton %}</button>
+        {% block boton_de_retorno %} {% endblock boton_de_retorno %}
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock main_content %}

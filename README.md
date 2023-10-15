@@ -6,11 +6,13 @@
 # default setup
 python manage.py create_default_groups
 # instalar archivos estáticos en /static/lib/
-npm install 
+npm install /static/lib/
 ```
 
 ## TODO
-- [ ] Usar Data Tables
-- [ ] Arreglar el dashboard con los datos reales
-- [ ] Finalizar el apartado de "Acerca de"
-- [ ] Agregar iconos en todas partes
+- Arreglar el dashboard con los datos reales
+- Finalizar el apartado de "Acerca de"
+- Finalizar el apartado de generación de informes
+- Arreglar el apartado de permisos
+  - Crear los roles y permisos mediante managment
+- Empaquetar la aplicación 

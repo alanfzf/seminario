@@ -8,7 +8,7 @@ from pypdf import PdfReader,PdfWriter
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from module_reports.models import Reporte
-from module_stats.utils import obtener_campo_accidente, obtener_campos_fallecidos, obtener_campos_pacientes, obtener_nombres_edades
+from module_stats.utils import obtener_campo_accidente, obtener_campo_personal, obtener_campos_hospital, obtener_campos_fallecidos, obtener_campos_pacientes, obtener_nombres_edades
 
 def get_form_data(report: Reporte):
     form_data = {}
@@ -16,12 +16,13 @@ def get_form_data(report: Reporte):
     pacientes, edades1 = obtener_nombres_edades(report.pacientes)
     fallecidos, edades2 = obtener_nombres_edades(report.fallecidos)
     listado_edades = map(str, edades1+edades2)
-    hay_fallecidos = report.fallecidos is not None and len(report.fallecidos.strip()) >= 0
+    hay_fallecidos = report.fallecidos is not None and len(report.fallecidos.strip()) > 0
     campos_pc = obtener_campos_pacientes(pacientes)
     campos_fa = obtener_campos_fallecidos(fallecidos)
     servicio = report.tipo_servicio.nombre
     campos_acc = obtener_campo_accidente(servicio)
-    print(servicio)
+    hospital = report.hospital.nombre
+    campos_hosp = obtener_campos_hospital(hospital)
 
     form_data['control'] = report.control
     form_data['fecha'] = report.fecha_reporte
@@ -47,7 +48,24 @@ def get_form_data(report: Reporte):
     form_data['escoltas'] = report.escoltas
     for clave, valor in campos_acc.items():
         form_data[clave] = valor
+    for clave, valor in campos_hosp.items():
+        form_data[clave] = valor
 
+    telf = report.radiotelefonista
+    pilot = report.pilotos.first()
+    unidades = report.unidades.all()
+    nombres_uni = [unidad.nombre for unidad in unidades]
+    personas = report.personal_destacado.all()
+    nombres_personal = [f"{personal.first_name} {personal.last_name}" for personal in personas]
+    campos_personal = obtener_campo_personal(nombres_personal)
+
+    form_data['radiotelefonista'] = f"{telf.first_name } {telf.last_name}"
+    form_data['pilotos'] = f"{pilot.first_name} {pilot.last_name}"
+    form_data['unidades'] = ", ".join(nombres_uni)
+    for clave, valor in campos_personal.items():
+        form_data[clave] = valor
+    form_data['observaciones'] = report.observaciones
+    
     return form_data
 
 
@@ -66,8 +84,6 @@ class ViewPrintOne(LoginRequiredMixin, View):
             input_stream = open(template, "rb")
 
             pdf_reader = PdfReader(input_stream, strict=False)
-
-
             pdf_writer = PdfWriter()
 
             pdf_writer.append(pdf_reader)

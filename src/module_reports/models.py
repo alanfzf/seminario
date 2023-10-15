@@ -17,7 +17,6 @@ class Reporte(models.Model):
     entrada = models.CharField(max_length=256, blank=False, verbose_name='Entrada a')
     hora_entrada = models.DateTimeField(blank=False, verbose_name='Hora de entrada')
     observaciones = models.TextField(blank=True)
-    # minutos_trabajados 
 
     # DATOS DEL PERSONAL
     pilotos = models.ManyToManyField(User, verbose_name='Piloto(s)')

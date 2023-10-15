@@ -38,6 +38,7 @@ class ReporteForm(forms.ModelForm):
             'control': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'type': 'number',
+                'min': '0'
             }),
             'fecha_reporte': forms.DateInput( 
                 format='%Y-%m-%d',

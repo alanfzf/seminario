@@ -4,7 +4,7 @@ from .models import Reporte
 from module_reports.utils import valid_names, valid_names_and_ages
 
 ERROR_NAMES = "El formato debe ser ➡️ Nombres Apellidos, Otros Nombres Otros Apellidos, ..."
-ERROR_AGES =  "El formato debe ser ➡️ Nombres Apellidos, Otros Nombres Otros Apellidos, ..."
+ERROR_AGES =  "El formato debe ser ➡️ Nombres Apellidos: Edad, Otros Nombres Otros Apellidos: Edad, ..."
 
 class ReporteForm(forms.ModelForm):
 

@@ -10,7 +10,6 @@ npm install /static/lib/
 ```
 
 ## TODO
-- Arreglar el dashboard con los datos reales
 - Finalizar el apartado de "Acerca de"
 - Finalizar el apartado de generación de informes
 - Arreglar el apartado de permisos

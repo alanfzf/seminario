@@ -1,14 +1,21 @@
 import io
 import os
-from django.http import FileResponse, JsonResponse
-from django.views.generic import View
-from django.conf import settings
-from pypdf import PdfReader,PdfWriter
+import calendar
 
+from datetime import timedelta
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, F
+from django.http import FileResponse, JsonResponse
+from django.utils import timezone 
+from django.views.generic import View
+from pypdf import PdfReader,PdfWriter
 
 from module_reports.models import Reporte
 from module_stats.utils import obtener_campo_accidente, obtener_campo_personal, obtener_campos_hospital, obtener_campos_fallecidos, obtener_campos_pacientes, obtener_nombres_edades
+
+
+
 
 def get_form_data(report: Reporte):
     form_data = {}
@@ -98,3 +105,49 @@ class ViewPrintOne(LoginRequiredMixin, View):
 
         except Exception as e:
             return JsonResponse({ "error": str(e) }, status=500)
+
+
+class ViewStatsServicesTypes(LoginRequiredMixin, View):
+    # esta vista sirve para visualizar la cantidad de los servicios atendidos por categoria
+    # en el mes actual
+    def get(self, request, *args, **kwargs):
+        today = timezone.now()
+        cal_lastday = calendar.monthrange(today.year, today.month)[1]
+        first_day = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        last_day = today.replace(day=cal_lastday, hour=23, minute=59, second=59, microsecond=9999)
+        estadistica = {}
+
+        top_servicios = Reporte.objects.\
+        filter(fecha_reporte__range=(first_day, last_day)).\
+        values('tipo_servicio__nombre').annotate(cantidad=Count('tipo_servicio')).\
+        order_by('-cantidad')[:5]
+
+        for servicio in top_servicios:
+            nombre = servicio['tipo_servicio__nombre']
+            qty = servicio['cantidad']
+            estadistica[nombre] = qty
+
+        return JsonResponse(estadistica)
+
+
+class ViewStatsServicesDone(LoginRequiredMixin, View):
+    # esta vista sirve para visualizar la cantidad de servicios atendidos por cada dia en el mes actual
+
+    def get(self, request, *args, **kwargs):
+        today = timezone.now()
+        cal_lastday = calendar.monthrange(today.year, today.month)[1]
+        first_day = today.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        last_day = today.replace(day=cal_lastday, hour=23, minute=59, second=59, microsecond=9999)
+
+        servicios_por_dia = Reporte.objects.filter(fecha_reporte__range=(first_day, last_day)) \
+                             .annotate(dia=F('fecha_reporte__day')) \
+                             .values('dia') \
+                             .annotate(total=Count('id')) \
+                             .order_by('dia')
+        resultados = {servicio['dia']: servicio['total'] for servicio in servicios_por_dia}
+
+        for dia in range(1, cal_lastday+1):
+            resultados.setdefault(dia, 0)
+
+        resultados = dict(sorted(resultados.items()))
+        return JsonResponse(resultados)

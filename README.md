@@ -5,13 +5,13 @@
 ```bash
 # default setup
 python manage.py create_default_groups
-# instalar archivos estáticos en /static/lib/
-npm install /static/lib/
+python manage.py collectstatic
 ```
 
 ## TODO
-- Finalizar el apartado de "Acerca de"
-- Finalizar el apartado de generación de informes
-- Arreglar el apartado de permisos
-  - Crear los roles y permisos mediante managment
-- Empaquetar la aplicación 
+- Finalizar el apartado de `Acerca de`
+- Finalizar el apartado de `Generación de informes`
+- Arreglar permisos
+  - Crear los roles y permisos mediante comando de managment
+- [X] [Empaquetar la aplicación](https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/)
+- [ ] Crear worker para realizar guardado de la base de datos

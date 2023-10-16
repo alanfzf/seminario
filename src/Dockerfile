@@ -27,7 +27,14 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r $REQUI
 #########
 # NODE #
 #########
+FROM node:lts-alpine AS builder_node
 
+# set work directory
+WORKDIR /usr/src/app
+COPY . .
+
+WORKDIR /usr/src/app/static/lib/
+RUN npm install
 
 #########
 # FINAL #
@@ -42,12 +49,15 @@ ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
 WORKDIR $APP_HOME
 
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/$REQUIREMENTS_FILE .
+COPY --from=builder_node /usr/src/app/static/lib/ ./static/lib/
+
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 

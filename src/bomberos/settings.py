@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-z2=*zu90j5+^2
 DEBUG = bool(os.environ.get("DEBUG", default=1))
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ["http://localhost:80"]
 
 # Application definition
 

@@ -2,8 +2,10 @@
 # BUILDER #
 ###########
 FROM python:3.11.4-slim-buster as builder
+
 # set work directory
 WORKDIR /usr/src/app
+
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
@@ -15,8 +17,16 @@ RUN apt-get update && \
 # copy all files
 COPY . .
 
+# define python req file
+ARG REQUIREMENTS_FILE=req.txt
+
 RUN pip install --upgrade pip
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r req.txt
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r $REQUIREMENTS_FILE
+
+
+#########
+# NODE #
+#########
 
 
 #########
@@ -37,7 +47,7 @@ WORKDIR $APP_HOME
 # install dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends netcat
 COPY --from=builder /usr/src/app/wheels /wheels
-COPY --from=builder /usr/src/app/req.txt .
+COPY --from=builder /usr/src/app/$REQUIREMENTS_FILE .
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 

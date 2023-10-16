@@ -3,6 +3,15 @@
 ## Setup
 
 ```bash
+# Debemos de crear el archivo .env
+
+# Aquí se debe colocar la secret key que le servirá a Django.
+SECRET_KEY=CHANGE_ME
+# Aquí debemos de indicar que el servidor a lanzar no estará en modo de desarrollo.
+DEBUG=0
+```
+
+```bash
 # default setup
 python manage.py create_default_groups
 python manage.py collectstatic

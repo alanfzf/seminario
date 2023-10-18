@@ -12,8 +12,7 @@ from pypdf import PdfReader,PdfWriter
 
 from module_reports.models import Reporte
 from module_stats.forms import SummaryForm
-from module_stats.utils import obtener_campo_accidente, obtener_campo_personal, obtener_campos_hospital, obtener_campos_fallecidos, obtener_campos_pacientes, obtener_nombres_edades
-
+from module_stats.utils import *
 
 class ViewSummary(LoginRequiredMixin, TemplateView):
     template_name = 'resumen.html'
@@ -23,9 +22,9 @@ class ViewSummary(LoginRequiredMixin, TemplateView):
         context['form'] = SummaryForm()
         return context
 
-
 #********* PRINT VIEWS *********
 class ViewPrintOne(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
         id_to_search = kwargs.get('pk')
         try:
@@ -33,17 +32,19 @@ class ViewPrintOne(LoginRequiredMixin, View):
             form_data = get_form_data(report)
 
             template = os.path.join(settings.TEMPLATES_DIR, 'reporte.pdf')
-            input_stream = open(template, "rb")
 
-            pdf_reader = PdfReader(input_stream, strict=False)
-            pdf_writer = PdfWriter()
+            with open(template, "rb") as pdf_stream:
+                pdf_reader = PdfReader(pdf_stream)
+                pdf_writer = PdfWriter()
 
-            pdf_writer.append(pdf_reader)
-            pdf_writer.update_page_form_field_values(pdf_writer.pages[0], form_data)
-
-            # crear el buffer que contiene el pdf
+                pdf_writer.append(pdf_reader)
+                pdf_writer.update_page_form_field_values(
+                    pdf_writer.pages[0], 
+                    form_data
+                )
             output_pdf_buffer = io.BytesIO()
             pdf_writer.write(output_pdf_buffer)
+            pdf_writer.close()
             output_pdf_buffer.seek(0)
 
             return FileResponse(output_pdf_buffer, as_attachment=True, filename=f"reporte_{report.control}.pdf") 
@@ -53,7 +54,30 @@ class ViewPrintOne(LoginRequiredMixin, View):
 
 
 class ViewPrintMultiple(LoginRequiredMixin, View):
-    pass
+    def get(self, request, *args, **kwargs):
+        try:
+            report_ids = [3,4,5]
+            reports = Reporte.objects.filter(id__in=report_ids)
+            template = os.path.join(settings.TEMPLATES_DIR, 'reporte.pdf')
+
+            with open(template, "rb") as input_stream:
+                pdf_writer = PdfWriter()
+                for index, report in enumerate(reports):
+                    pdf_reader = PdfReader(input_stream)
+                    pdf_reader.add_form_topname(f"form{index}")
+                    form_data = get_form_data(report)
+                    pdf_writer.append(pdf_reader)
+                    pdf_writer.update_page_form_field_values(pdf_writer.pages[index], form_data)
+
+            # crear el buffer que contiene el pdf
+            out_pdf_buffer = io.BytesIO()
+            pdf_writer.write(out_pdf_buffer)
+            pdf_writer.close()
+            out_pdf_buffer.seek(0)
+            return FileResponse(out_pdf_buffer, as_attachment=True, filename=f"reportes.pdf") 
+
+        except Exception as e:
+            return JsonResponse({"errors": str(e)}, status=500)
 
 
 class ViewStatsServicesTypes(LoginRequiredMixin, View):

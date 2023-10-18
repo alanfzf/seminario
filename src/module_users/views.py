@@ -5,12 +5,12 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from .forms import UsuarioForm
 
-class VistaListarUsuarios(LoginRequiredMixin, ListView):
+class ViewListUsers(LoginRequiredMixin, ListView):
     context_object_name = 'usuarios'
     template_name = 'all_users.html'
     model = User
 
-class VistaCrearUsuario(LoginRequiredMixin, FormView):
+class ViewCreateUser(LoginRequiredMixin, FormView):
     template_name = 'form_create_user.html'
     form_class = UsuarioForm
     success_url = reverse_lazy('users:index')
@@ -22,7 +22,7 @@ class VistaCrearUsuario(LoginRequiredMixin, FormView):
         user.save()
         return super().form_valid(form)
 
-class VistaEditarUsuario(LoginRequiredMixin, UpdateView):
+class ViewUpdateUser(LoginRequiredMixin, UpdateView):
     model = User
     template_name = 'form_update_user.html'
     form_class = UsuarioForm
@@ -38,7 +38,7 @@ class VistaEditarUsuario(LoginRequiredMixin, UpdateView):
         user.save()
         return super().form_valid(form)
 
-class VistaEliminarUsuario(LoginRequiredMixin, View):
+class ViewDeleteUser(LoginRequiredMixin, View):
 
     def delete(self, request, *args, **kwargs):
         logged_id = self.request.user.id
@@ -52,6 +52,5 @@ class VistaEliminarUsuario(LoginRequiredMixin, View):
             usuario.delete()
         except Exception as e:
             resp['errors'] = str(e)
-            print(e)
             status = 400
         return JsonResponse(resp, status=status)

@@ -25,7 +25,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-z2=*zu90j5+^2*=w3%t!)fo3$8r#=zbmibhti2$1g_6g5&4+d6')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(int(os.environ.get('DEBUG', default=1)))
+DEBUG = os.environ.get('DEBUG', "TRUE") == "TRUE"
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ["http://localhost:80"]

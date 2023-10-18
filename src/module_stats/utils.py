@@ -93,7 +93,6 @@ def obtener_campos_hospital(nombre):
 
 
 def obtener_nombres_edades(personas):
-    print(personas)
     datos = personas.split(',')
 
     nombres = []
@@ -104,7 +103,7 @@ def obtener_nombres_edades(personas):
             nombre, edad = dato.split(':')
             nombres.append(nombre.strip())
             edades.append(edad.strip())
-        except Exception as e:
-            print(f"La cadena \"{dato}\" es incorrecta no tiene el formato nombre: edad")
+        except Exception:
+            pass
 
     return nombres, edades

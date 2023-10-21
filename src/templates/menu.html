@@ -39,10 +39,6 @@
               <li><a class="dropdown-item" href="{% url 'resources:hospitals' %}">Hospitales</a></li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'dashboard:about' %}"><i class="bi bi-info-circle-fill"></i> Acerca de</a>
-          </li>
         </ul>
 
         <ul class="navbar-nav">
@@ -63,12 +59,15 @@
   {% endblock main_content %}
 </main>
 
-<footer class="py-2 bg-dark mt-4 footer">
-  <ul class="nav justify-content-center pb-3">
-    <li class="nav-item"><a href="https://github.com/alanfvn" target="_blank" class="nav-link px-2 text-white">Creditos</a></li>
-  </ul>
-  <p class="text-center text-white"><strong>© {% now "Y" %}</strong> Alan David González López</p>
+<footer class="bg-dark mt-4 py-4 text-white">
+  <div class="d-flex flex-column align-items-center">
+    <div>
+      <a href="{% url 'dashboard:about' %}" class="link-light text-decoration-none link-opacity-75-hover">Más información</a>
+    </div>
+    <div class="mt-2 fst-italic">
+      &copy; {% now "Y" %} &dash; <strong>36 CIA. Bomberos V. Cobán</strong>
+    </div>
+  </div>
 </footer>
-
 
 {% endblock content %}

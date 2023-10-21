@@ -1,16 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import  View, FormView, ListView, UpdateView
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+
+from module_users.mixins.roles import RolAdminMixin
 from .forms import UsuarioForm
 
-class ViewListUsers(LoginRequiredMixin, ListView):
+class ViewListUsers( ListView):
     context_object_name = 'usuarios'
     template_name = 'all_users.html'
     model = User
 
-class ViewCreateUser(LoginRequiredMixin, FormView):
+class ViewCreateUser(RolAdminMixin, FormView):
     template_name = 'form_create_user.html'
     form_class = UsuarioForm
     success_url = reverse_lazy('users:index')
@@ -22,7 +23,7 @@ class ViewCreateUser(LoginRequiredMixin, FormView):
         user.save()
         return super().form_valid(form)
 
-class ViewUpdateUser(LoginRequiredMixin, UpdateView):
+class ViewUpdateUser(RolAdminMixin, UpdateView):
     model = User
     template_name = 'form_update_user.html'
     form_class = UsuarioForm
@@ -38,7 +39,7 @@ class ViewUpdateUser(LoginRequiredMixin, UpdateView):
         user.save()
         return super().form_valid(form)
 
-class ViewDeleteUser(LoginRequiredMixin, View):
+class ViewDeleteUser(RolAdminMixin, View):
 
     def delete(self, request, *args, **kwargs):
         logged_id = self.request.user.id

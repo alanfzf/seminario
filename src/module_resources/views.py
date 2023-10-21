@@ -2,28 +2,30 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import  CreateView, ListView, UpdateView, View
+
+from module_users.mixins.roles import RolAdminMixin
 from .models import Vehiculo, Hospital, Servicio
 from .forms import HospitalForm, ServicioForm, VehiculoForm
 
 #***** APARTADO DE VEHICULOS *****
-class ViewVehicles(ListView):
+class ViewVehicles(LoginRequiredMixin, ListView):
     context_object_name = 'vehiculos'
     template_name = 'vehiculos/all.html'
     model = Vehiculo
 
-class ViewVehicleCreate(CreateView):
+class ViewVehicleCreate(LoginRequiredMixin, CreateView):
     model = Vehiculo
     form_class = VehiculoForm
     template_name = 'vehiculos/create.html'
     success_url = reverse_lazy('resources:vehicles')
 
-class ViewVehicleUpdate(UpdateView):
+class ViewVehicleUpdate(LoginRequiredMixin, UpdateView):
     model = Vehiculo
     form_class = VehiculoForm
     template_name = 'vehiculos/update.html'
     success_url = reverse_lazy('resources:vehicles')
 
-class ViewVehicleDelete(View):
+class ViewVehicleDelete(RolAdminMixin, View):
     def delete(self, request, *args, **kwargs):
         id_to_delete = kwargs.get('pk')
         status = 200
@@ -37,24 +39,24 @@ class ViewVehicleDelete(View):
         return JsonResponse(resp, status=status)
 
 #***** APARTADO DE SERVICIOS *****
-class ViewServices(ListView):
+class ViewServices(LoginRequiredMixin, ListView):
     context_object_name = 'servicios'
     template_name = 'servicios/all.html'
     model = Servicio
 
-class ViewServiceCreate(CreateView):
+class ViewServiceCreate(LoginRequiredMixin, CreateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicios/create.html'
     success_url = reverse_lazy('resources:services')
 
-class ViewServiceUpdate(UpdateView):
+class ViewServiceUpdate(LoginRequiredMixin, UpdateView):
     model = Servicio
     form_class = ServicioForm
     template_name = 'servicios/update.html'
     success_url = reverse_lazy('resources:services')
 
-class ViewServiceDelete(View):
+class ViewServiceDelete(RolAdminMixin, View):
     def delete(self, request, *args, **kwargs):
         id_to_delete = kwargs.get('pk')
         status = 200
@@ -85,7 +87,7 @@ class ViewHospitalUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'hospitales/update.html'
     success_url = reverse_lazy('resources:hospitals')
 
-class ViewHospitalDelete(LoginRequiredMixin, View):
+class ViewHospitalDelete(RolAdminMixin, View):
     def delete(self, request, *args, **kwargs):
         id_to_delete = kwargs.get('pk')
         status = 200

@@ -10,9 +10,15 @@ function deleteSomething(url_target, csrf, callback_error, callback_done){
     .done(function(data){
       callback_done(data);
     })
-    .fail(function(xhr, _status, _error){
-      const respJson = xhr.responseJSON
-      const errors   = respJson.errors
+    .fail(function(xhr, err_status, error){
+      const {status, responseJSON} = xhr
+      let {errors} = responseJSON || {}
+
+      if (!errors){
+        errval = (status === 403 ? `No tienes permiso de realizar esto` 
+          : `${err_status}, ${error}`)
+        errors = `${status}: ${errval}`
+      }
       callback_error(errors);
     })
     .always(function(_data){})

@@ -4,6 +4,7 @@ from django.views.generic import CreateView, ListView, UpdateView, View
 from django.http import JsonResponse
 from module_reports.forms import ReporteForm
 from module_reports.models import Reporte
+from module_users.mixins.roles import RolAdminMixin
 
 class ViewReports(LoginRequiredMixin, ListView):
     context_object_name = 'reportes'
@@ -23,7 +24,7 @@ class ViewUpdateReport(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('reports:index')
 
 
-class ViewDeleteReport(LoginRequiredMixin, View):
+class ViewDeleteReport(RolAdminMixin, View):
     def delete(self, request, *args, **kwargs):
         id_to_delete = kwargs.get('pk')
         status = 200

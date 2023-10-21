@@ -1,6 +1,8 @@
 $(function(){
 
- $('#btn-print').click(function(event) {
+  $('#tabla').DataTable({})
+
+  $('#btn-print').click(function(event) {
     event.preventDefault();
     const report_ids = $('#tabla tbody tr').map(function() { return $(this).find('th').text(); }).get();
     const append_url = `report_ids=${report_ids.join(",")}`

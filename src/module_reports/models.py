@@ -1,5 +1,4 @@
 from django.db import models
-from django.template.defaulttags import register
 from module_resources.models import Hospital, Servicio, Vehiculo
 from django.contrib.auth.models import User
 
@@ -35,6 +34,22 @@ class Reporte(models.Model):
     tipo_servicio = models.ForeignKey(Servicio, on_delete=models.PROTECT, verbose_name='Tipo de servicio')
     hospital = models.ForeignKey(Hospital, on_delete=models.PROTECT, verbose_name='Hospital de traslado')
 
-    @register.filter(is_safe=True)
-    def clabel(value):
-        return value.label_tag(attrs={'class': 'form-label'})
+
+    def get_minutos_trabajados(self):
+        diferencia = self.hora_entrada - self.hora_salida
+        minutos_trabajados = diferencia.total_seconds() // 60
+        return int(minutos_trabajados)
+
+    def get_num_pacientes(self):
+        pacientes = self.pacientes
+        if not pacientes:
+            return 0
+        return len(pacientes.split(','))
+
+
+    def get_num_fallecidos(self):
+        fallecidos = self.fallecidos
+        if not fallecidos:
+            return 0
+        return len(fallecidos.split(','))
+

@@ -13,9 +13,16 @@
       </button>
       <div class="navbar-collapse collapse d-md-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1">
+          <!-- reportes -->
           <li class="nav-item">
             <a class="nav-link" href="{% url 'reports:index' %}"><i class="bi bi-clipboard2-pulse-fill"></i> Reportes</a>
           </li>
+
+          <!-- informes -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'stats:index' %}"><i class="bi bi-journals"></i> Informes</a>
+          </li>
+
 
           <li class="nav-item">
             <a class="nav-link" href="{% url 'users:index' %}"><i class="bi bi-person-fill"></i> Personal</a>

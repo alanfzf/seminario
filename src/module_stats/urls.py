@@ -6,6 +6,7 @@ app_name = 'stats'
 
 urlpatterns = [
     # hospitales
+    path('', ViewSummary.as_view(), name='index'),
     path('imprimir/<int:pk>/', ViewPrintOne.as_view(), name='print_one'),
     path('imprimir_varios/', ViewPrintMultiple.as_view(), name='print_multiple'),
     # path('informes/', ViewPrintMultiple.as_view(), name='print_multiple'),

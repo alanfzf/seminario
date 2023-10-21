@@ -1,5 +1,5 @@
 $(function(){
-  $('#tabla').DataTable()
+  $('#tabla').DataTable({})
   $('.delete-user').click(function(){
     const answer = confirm("¿De verdad deseas eliminar a este usuario?")
     if(!answer){return}

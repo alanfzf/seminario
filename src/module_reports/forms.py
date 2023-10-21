@@ -2,11 +2,17 @@ from django import forms
 from django.utils import timezone
 from .models import Reporte
 from module_reports.utils import valid_names, valid_names_and_ages
+from django.template.defaulttags import register
 
 ERROR_NAMES = "El formato debe ser ➡️ Nombres Apellidos, Otros Nombres Otros Apellidos, ..."
 ERROR_AGES =  "El formato debe ser ➡️ Nombres Apellidos: Edad, Otros Nombres Otros Apellidos: Edad, ..."
 
 class ReporteForm(forms.ModelForm):
+
+
+    @register.filter(is_safe=True)
+    def clabel(value):
+        return value.label_tag(attrs={'class': 'form-label'})
 
     def clean_solicitantes(self):
         cleaned_data = super().clean()
@@ -123,6 +129,3 @@ class ReporteForm(forms.ModelForm):
                 'rows': 4,
             }),
         }
-
-
-

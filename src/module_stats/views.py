@@ -6,8 +6,11 @@ from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, F
 from django.http import FileResponse, JsonResponse
+from django.shortcuts import render
 from django.utils import timezone 
 from django.views.generic import TemplateView, View
+from django.db.models import Q
+
 from pypdf import PdfReader,PdfWriter
 
 from module_reports.models import Reporte
@@ -22,21 +25,39 @@ class ViewSummary(LoginRequiredMixin, TemplateView):
         context['form'] = SummaryForm()
         return context
 
+    def post(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        form_data = request.POST
+        form = SummaryForm(form_data)
+        context['form'] = form
+        context['reportes'] = []
+
+        if form.is_valid():
+            query = Q()
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+            service = form.cleaned_data['service_type']
+            query &= Q(fecha_reporte__range=(start_date, end_date))
+
+            if service is not None:
+                query &= Q(tipo_servicio=service)
+            context['reportes'] = Reporte.objects.filter(query)
+
+        return render(request, self.template_name, context=context)
+
+
 #********* PRINT VIEWS *********
 class ViewPrintOne(LoginRequiredMixin, View):
-
     def get(self, request, *args, **kwargs):
         id_to_search = kwargs.get('pk')
         try:
             report = Reporte.objects.get(id=id_to_search)
             form_data = get_form_data(report)
-
             template = os.path.join(settings.TEMPLATES_DIR, 'reporte.pdf')
+            pdf_writer = PdfWriter()
 
             with open(template, "rb") as pdf_stream:
                 pdf_reader = PdfReader(pdf_stream)
-                pdf_writer = PdfWriter()
-
                 pdf_writer.append(pdf_reader)
                 pdf_writer.update_page_form_field_values(
                     pdf_writer.pages[0], 
@@ -54,14 +75,23 @@ class ViewPrintOne(LoginRequiredMixin, View):
 
 
 class ViewPrintMultiple(LoginRequiredMixin, View):
+
     def get(self, request, *args, **kwargs):
+        exceptions = {}
+        rlist = request.GET.get('report_ids')
+
+        if not rlist:
+            exceptions['errors'] = "No list for the reports was passed"
+            return JsonResponse(exceptions, status=400)
+
         try:
-            report_ids = [3,4,5]
+            # conver the list to numbers
+            report_ids = list(map(int, rlist.split(',')))
             reports = Reporte.objects.filter(id__in=report_ids)
             template = os.path.join(settings.TEMPLATES_DIR, 'reporte.pdf')
+            pdf_writer = PdfWriter()
 
             with open(template, "rb") as input_stream:
-                pdf_writer = PdfWriter()
                 for index, report in enumerate(reports):
                     pdf_reader = PdfReader(input_stream)
                     pdf_reader.add_form_topname(f"form{index}")
@@ -77,7 +107,8 @@ class ViewPrintMultiple(LoginRequiredMixin, View):
             return FileResponse(out_pdf_buffer, as_attachment=True, filename=f"reportes.pdf") 
 
         except Exception as e:
-            return JsonResponse({"errors": str(e)}, status=500)
+            exceptions['errors'] = str(e)
+            return JsonResponse(exceptions, status=500)
 
 
 class ViewStatsServicesTypes(LoginRequiredMixin, View):
@@ -142,7 +173,7 @@ def get_form_data(report: Reporte):
 
     form_data['control'] = report.control
     form_data['fecha'] = report.fecha_reporte
-    form_data['minutos'] = int((report.hora_entrada - report.hora_salida).total_seconds() / 60)
+    form_data['minutos'] = report.get_minutos_trabajados()
     form_data['telefono'] = "X" if soli_telefono else ""
     form_data['personal'] = "" if soli_telefono else "X"
     form_data['salida'] = report.salida

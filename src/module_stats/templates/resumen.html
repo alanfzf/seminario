@@ -1,5 +1,78 @@
 {% extends "menu.html" %}
 
-{% block main_content %}
+{% load static %}
+{% block head %}
+<!-- data tables -->
+<script src="{% static 'lib/node_modules/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'lib/node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'lib/node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css' %}">
+<!-- logica de la vista -->
+<script src="{% static 'js/resumen.js' %}"></script>
+{% endblock head %}
 
+
+{% block main_content %}
+<div class="container">
+  <h1>Informes <i class="bi bi-journals"></i></h1>
+  <hr>
+
+  {% if form.errors %}
+  <div id='alert-area' class="alert alert-warning" role="alert">
+    <strong>Ha ocurrido un error:</strong>
+    {{ form.errors }}
+  </div>
+  {% endif %}
+
+  <form id='form-summary' method="POST">
+    {% csrf_token %}
+    <div class="row row-cols-1 row-cols-md-3 mb-4">
+      <div class="col mt-3">
+        {{form.start_date|clabel}}
+        {{form.start_date}}
+      </div>
+      <div class="col mt-3">
+        {{form.end_date|clabel}}
+        {{form.end_date}}
+      </div>
+      <div class="col mt-3">
+        {{form.service_type|clabel}}
+        {{form.service_type}}
+      </div>
+      <div class="col w-100 gap-2 d-flex flex-row mt-3">
+        <button class="btn btn-success " type="submit">Realizar búsqueda <i class="bi bi-search"></i></button>
+        <a id='btn-print' href="{% url 'stats:print_multiple' %}" class="btn btn-info">Imprimir reportes <i class="bi bi-printer-fill"></i></a>
+      </div>
+    </div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-striped" id='tabla'>
+      <thead class="table-dark">
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Control</th>
+          <th scope="col">Tipo de servicio</th>
+          <th scope="col">Fecha de servicio</th>
+          <th scope="col">Minutos trabajados</th>
+          <th scope="col">Pacientes</th>
+          <th scope="col">Fallecidos</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reporte in reportes %}
+        <tr>
+          <th scope="row">{{reporte.id}}</th>
+          <td>#{{reporte.control}}</td>
+          <td>{{reporte.tipo_servicio}}</td>
+          <td>{{reporte.fecha_reporte}}</td>
+          <td>{{reporte.get_minutos_trabajados}}</td>
+          <td>{{reporte.get_num_pacientes}}</td>
+          <td>{{reporte.get_num_fallecidos}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</div>
 {% endblock main_content %}

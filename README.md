@@ -8,7 +8,7 @@
 # Aquí se debe colocar la secret key que le servirá a Django.
 SECRET_KEY=CHANGE_ME
 # Aquí debemos de indicar que el servidor a lanzar no estará en modo de desarrollo.
-DEBUG=0
+DEBUG=FALSE
 ```
 
 ```bash

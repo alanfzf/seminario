@@ -18,154 +18,136 @@
   <hr>
 
   <!-- area de alertas -->
-
   {% if form.errors %}
   <div id='alert-area' class="alert alert-warning" role="alert">
     <strong>Ha ocurrido un error:</strong>
     {{ form.errors }}
   </div>
   {% endif %}
-  
+
   <form method="post">
     {% csrf_token %}
-    <div class="accordion shadow-sm">
-      <!-- seccion 1 -->
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true" aria-controls="collapse-1">
-            <strong class="text-uppercase">Sección #1 (información general del reporte)</strong>
-          </button>
-        </div>
-        <div id="collapse-1" class="accordion-collapse collapse show">
-          <div class="accordion-body bg-light-subtle">
-            <!-- inicia contenido seccion #1 -->
-            <div class="row row-cols-1 row-cols-md-2 mb-4">
-              <div class="col mt-3">
-                {{form.control|clabel}}
-                {{form.control}}
-              </div>
-              <div class="col mt-3">
-                {{form.fecha_reporte|clabel}}
-                {{form.fecha_reporte}}
-              </div>
-              <div class="col mt-3">
-                {{form.salida|clabel}}
-                {{form.salida}}
-              </div>
-              <div class="col mt-3">
-                {{form.hora_salida|clabel}}
-                {{form.hora_salida}}
-              </div>
-              <div class="col mt-3">
-                {{form.entrada|clabel}}
-                {{form.entrada}}
-              </div>
-              <div class="col mt-3">
-                {{form.hora_entrada|clabel}}
-                {{form.hora_entrada}}
-              </div>
-              <div class="w-100 mt-3">
-                {{form.observaciones|clabel}}
-                {{form.observaciones}}
-              </div>
-            </div>
-            <!-- finaliza contenido seccion #1  -->
-          </div>
-        </div>
+    <div class="card my-5 shadow">
+      <div class="card-header">
+        <strong class="text-uppercase">Sección #1 (información general del reporte)</strong>
       </div>
-
-      <!-- seccion 2 -->
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-            <strong class="text-uppercase">Sección #2 (información del personal)</strong>
-          </button>
-        </div>
-        <div id="collapse-2" class="accordion-collapse collapse">
-          <div class="accordion-body bg-light-subtle">
-            <!-- inicia contenido seccion #2 -->
-            <div class="row row-cols-1 row-cols-md-2 mb-4">
-              <div class="col mt-3">
-                {{form.pilotos|clabel}}
-                {{form.pilotos}}
-              </div>
-              <div class="col mt-3">
-                {{form.unidades|clabel}}
-                {{form.unidades}}
-              </div>
-              <div class="col mt-3">
-                {{form.personal_destacado|clabel}}
-                {{form.personal_destacado}}
-              </div>
-              <div class="col mt-3">
-                {{form.radiotelefonista|clabel}}
-                {{form.radiotelefonista}}
-              </div>
-            </div>
-            <!-- finaliza contenido seccion #2  -->
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            {{form.control|clabel}}
+            {{form.control}}
           </div>
-        </div>
-      </div>
-
-      <!-- seccion 3 -->
-      <div class="accordion-item">
-        <div class="accordion-header">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-            <strong class="text-uppercase">Sección #3 (información del servicio)</strong>
-          </button>
-        </div>
-        <div id="collapse-3" class="accordion-collapse collapse">
-          <div class="accordion-body bg-light-subtle">
-            <!-- inicia contenido seccion #3 -->
-            <div class="row row-cols-1 row-cols-md-2 mb-4">
-              <div class="col mt-3">
-                {{form.direccion|clabel}}
-                {{form.direccion}}
-              </div>
-              <div class="col mt-3">
-                {{form.tipo_servicio|clabel}}
-                {{form.tipo_servicio}}
-              </div>
-              <div class="col mt-3">
-                {{form.hospital|clabel}}
-                {{form.hospital}}
-              </div>
-              <div class="col mt-3">
-                {{form.tipo_solicitud|clabel}}
-                {{form.tipo_solicitud}}
-              </div>
-              <div class="col mt-3">
-                {{form.solicitantes|clabel}}
-                {{form.solicitantes}}
-              </div>
-              <div class="col mt-3">
-                {{form.escoltas|clabel}}
-                {{form.escoltas}}
-              </div>
-              <div class="col mt-3">
-                {{form.pacientes|clabel}}
-                {{form.pacientes}}
-              </div>
-              <div class="col mt-3">
-                {{form.fallecidos|clabel}}
-                {{form.fallecidos}}
-              </div>
-              <div class="w-100 mt-3">
-                {{form.domicilios|clabel}}
-                {{form.domicilios}}
-              </div>
-            </div>
-            <!-- finaliza contenido seccion #3  -->
+          <div class="col-md-6">
+            {{form.fecha_reporte|clabel}}
+            {{form.fecha_reporte}}
+          </div>
+          <div class="col-md-6">
+            {{form.salida|clabel}}
+            {{form.salida}}
+          </div>
+          <div class="col-md-6">
+            {{form.hora_salida|clabel}}
+            {{form.hora_salida}}
+          </div>
+          <div class="col-md-6">
+            {{form.entrada|clabel}}
+            {{form.entrada}}
+          </div>
+          <div class="col-md-6">
+            {{form.hora_entrada|clabel}}
+            {{form.hora_entrada}}
+          </div>
+          <div class="col-12">
+            {{form.observaciones|clabel}}
+            {{form.observaciones}}
           </div>
         </div>
       </div>
     </div>
 
-    <div class="buttons mt-3">
-      <button id="report_submit" class="btn btn-primary">
+    <!-- seccion 1 -->
+    <div class="card my-5 shadow">
+      <div class="card-header">
+        <strong class="text-uppercase">Sección #2 (información del personal)</strong>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            {{form.pilotos|clabel}}
+            {{form.pilotos}}
+          </div>
+          <div class="col-md-6">
+            {{form.unidades|clabel}}
+            {{form.unidades}}
+          </div>
+          <div class="col-md-6">
+            {{form.personal_destacado|clabel}}
+            {{form.personal_destacado}}
+          </div>
+          <div class="col-md-6">
+            {{form.radiotelefonista|clabel}}
+            {{form.radiotelefonista}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- seccion 2 -->
+
+    <div class="card mt-5 mb-4 shadow">
+      <div class="card-header">
+        <strong class="text-uppercase">Sección #3 (información del servicio)</strong>
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            {{form.direccion|clabel}}
+            {{form.direccion}}
+          </div>
+          <div class="col-md-6">
+            {{form.tipo_servicio|clabel}}
+            {{form.tipo_servicio}}
+          </div>
+          <div class="col-md-6">
+            {{form.hospital|clabel}}
+            {{form.hospital}}
+          </div>
+          <div class="col-md-6">
+            {{form.tipo_solicitud|clabel}}
+            {{form.tipo_solicitud}}
+          </div>
+          <div class="col-md-6">
+            {{form.solicitantes|clabel}}
+            {{form.solicitantes}}
+          </div>
+          <div class="col-md-6">
+            {{form.escoltas|clabel}}
+            {{form.escoltas}}
+          </div>
+          <div class="col-md-6">
+            {{form.pacientes|clabel}}
+            {{form.pacientes}}
+          </div>
+          <div class="col-md-6">
+            {{form.fallecidos|clabel}}
+            {{form.fallecidos}}
+          </div>
+          <div class="col-12">
+            {{form.domicilios|clabel}}
+            {{form.domicilios}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- seccion 3 -->
+    <div class="buttons">
+      <button id="report_submit" class="btn btn-primary me-2">
         {% block report_btn_name %}{% endblock report_btn_name %}
       </button>
-      <a href="{% url 'reports:index' %}" class="btn btn-secondary">Cancelar <i class="bi bi-arrow-return-left"></i></a>
+      <a href="{% url 'reports:index' %}" class="btn btn-secondary">
+        Cancelar <i class="bi bi-arrow-return-left"></i>
+      </a>
     </div>
   </form>
 </div>

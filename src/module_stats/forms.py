@@ -20,6 +20,7 @@ class SummaryForm(Form):
 
     service_type =  ModelChoiceField(
         label="Tipo de servicio",
+        empty_label="**Todos los servicios**",
         required=False,
         queryset=Servicio.objects.all(), 
         widget=Select(attrs={ 'class': 'form-control' })

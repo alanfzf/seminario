@@ -13,3 +13,7 @@ html {
 .layout main {
   flex-grow: 1;
 }
+
+textarea {
+  resize:none!important;
+}

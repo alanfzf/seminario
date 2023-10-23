@@ -109,23 +109,23 @@ class ReporteForm(forms.ModelForm):
             }),
             'solicitantes': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 3,
                 'spellcheck': "false"
             }),
             'pacientes': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 3,
             }),
             'fallecidos': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 3,
             }),
             'escoltas': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 3,
             }),
             'domicilios': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 3,
             }),
         }

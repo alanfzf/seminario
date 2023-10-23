@@ -25,7 +25,7 @@
   </div>
   {% endif %}
 
-  <form method="post">
+  <form id='form-reporte' method="post" class='needs-validation' novalidate>
     {% csrf_token %}
     <div class="card my-5 shadow">
       <div class="card-header">
@@ -91,8 +91,8 @@
         </div>
       </div>
     </div>
-    <!-- seccion 2 -->
 
+    <!-- seccion 2 -->
     <div class="card mt-5 mb-4 shadow">
       <div class="card-header">
         <strong class="text-uppercase">Sección #3 (información del servicio)</strong>
@@ -136,7 +136,6 @@
             {{form.domicilios}}
           </div>
         </div>
-
       </div>
     </div>
 

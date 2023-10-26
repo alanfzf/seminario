@@ -1,9 +1,53 @@
 {% extends "menu.html" %}
 
 {% block main_content %}
-  <div class="container">
-    <h1>Seminario 2023</h1>
-    <hr>
+<div class="container">
+  <h1 class="fst-italic">Seminario 2023</h1>
+  <hr>
 
+
+  <div class="row g-3 my-4">
+    <div class="col-12 col-md-6">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto">
+            <span class="text-uppercase">Alan David González López</span>
+          </div>
+          <span class="badge bg-primary rounded-pill mx-2">P.M</span>
+          <span class="badge bg-warning text-black rounded-pill">Desarollador</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto"><span class="text-uppercase">Manuel Miguel Miguel</span></div>
+          <span class="badge bg-danger rounded-pill">Analista de sistemas</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto"><span class="text-uppercase">José Raúl Botzoc Merida</span></div>
+          <span class="badge bg-success rounded-pill mx-2">Q.A Tester</span>
+          <span class="badge bg-info text-black rounded-pill">Documentador</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-start">
+          <div class="ms-2 me-auto"><span class="text-uppercase">Héctor Armando Macz Bac</span></div>
+          <span class="badge bg-dark rounded-pill">Asesor</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="d-flex flex-row justify-content-center align-items-center">
+      </div>
+    </div>
   </div>
+
+
+  <div style="height:100px;width:auto"></div>
+
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <h4 class="text-muted fst-italic">Universidad Mariano Gálvez de Guatemala</h4>
+    <h5 class="text-muted fst-italic">Facultad de Ingeniería en Sistemas de Información, Campus Cobán</h5>
+    <div class="my-2">
+      {% load static %}
+      <img src="{% static "img/logo-umg.png" %}" class="img-fluid" width="220px" height="auto">
+    </div>
+  </div>
+</div>
 {% endblock main_content %}

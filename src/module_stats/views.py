@@ -5,11 +5,12 @@ import calendar
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, F
-from django.http import FileResponse, JsonResponse
+from django.http import FileResponse, Http404, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone 
 from django.views.generic import TemplateView, View
 from django.db.models import Q
+from django.urls import reverse_lazy
 
 from pypdf import PdfReader,PdfWriter
 
@@ -49,7 +50,8 @@ class ViewSummary(LoginRequiredMixin, TemplateView):
 #********* PRINT VIEWS *********
 class ViewPrintOne(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        id_to_search = kwargs.get('pk')
+        id_to_search = kwargs.get('pk', None)
+
         try:
             report = Reporte.objects.get(id=id_to_search)
             form_data = get_form_data(report)
@@ -67,22 +69,23 @@ class ViewPrintOne(LoginRequiredMixin, View):
             pdf_writer.write(output_pdf_buffer)
             pdf_writer.close()
             output_pdf_buffer.seek(0)
-
-            return FileResponse(output_pdf_buffer, as_attachment=True, filename=f"reporte_{report.control}.pdf") 
+            return FileResponse(
+                output_pdf_buffer, 
+                as_attachment=True, 
+                filename=f"reporte_{report.control}.pdf")
 
         except Exception as e:
-            return JsonResponse({ "error": str(e) }, status=500)
+            print(f"ERROR: {e}")
+            return HttpResponseRedirect(reverse_lazy('reports:index'))
 
 
 class ViewPrintMultiple(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
-        exceptions = {}
-        rlist = request.GET.get('report_ids')
+        rlist = request.GET.get('report_ids', "")
 
         if not rlist:
-            exceptions['errors'] = "No list for the reports was passed"
-            return JsonResponse(exceptions, status=400)
+            raise Http404("La lista de reportes esta vacia, selecciona fechas de inicio y final!")
 
         try:
             # conver the list to numbers
@@ -107,9 +110,8 @@ class ViewPrintMultiple(LoginRequiredMixin, View):
             return FileResponse(out_pdf_buffer, as_attachment=True, filename=f"reportes.pdf") 
 
         except Exception as e:
-            exceptions['errors'] = str(e)
-            return JsonResponse(exceptions, status=500)
-
+            print(f"ERROR: {e}")
+            return HttpResponseRedirect(reverse_lazy('stats:index'))
 
 class ViewStatsServicesTypes(LoginRequiredMixin, View):
     # esta vista sirve para visualizar la cantidad de los servicios atendidos por categoria

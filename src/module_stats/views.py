@@ -214,5 +214,10 @@ def get_form_data(report: Reporte):
     for clave, valor in campos_personal.items():
         form_data[clave] = valor
     form_data['observaciones'] = report.observaciones
+
+    # area de formalización
+    form_data['formalizado'] = f"{report.formalizador.first_name } {report.formalizador.last_name}"
+    form_data['conforme'] = f"{pilot.first_name} {pilot.last_name}"
+    form_data['vobo'] = f"{report.jefe_servicio.first_name} {report.jefe_servicio.last_name}"
     
     return form_data

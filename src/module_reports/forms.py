@@ -128,4 +128,13 @@ class ReporteForm(forms.ModelForm):
                 'class': 'form-control',
                 'rows': 3,
             }),
+
+            # formalizacion
+            'jefe_servicio': forms.Select(attrs={
+                'class': 'form-control select2',
+            }),
+            'formalizador': forms.Select(attrs={
+                'class': 'form-control select2',
+            }),
+            
         }

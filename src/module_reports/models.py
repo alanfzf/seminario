@@ -35,6 +35,15 @@ class Reporte(models.Model):
     hospital = models.ForeignKey(Hospital, on_delete=models.PROTECT, verbose_name='Hospital de traslado')
 
 
+    # DATOS DE FORMALIZACIÓN
+    jefe_servicio = models.ForeignKey(User, verbose_name='Jefe de Servicio', 
+                                      related_name='jefe_de_servicio', 
+                                      on_delete=models.PROTECT)
+
+    formalizador = models.ForeignKey(User, verbose_name='Formalizador', 
+                                     related_name='formalizador', 
+                                     on_delete=models.PROTECT)
+
     def get_minutos_trabajados(self):
         diferencia = self.hora_entrada - self.hora_salida
         minutos_trabajados = diferencia.total_seconds() // 60

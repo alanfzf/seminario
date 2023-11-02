@@ -45,5 +45,3 @@ crontab -e
 #| +-------- Hour (0 - 23)
 #+---------- Minute (0 - 59)
 ```
-
-## Test de webhook

@@ -6,6 +6,10 @@
 <script src='{% static "lib/node_modules/select2/dist/js/select2.min.js" %}'></script>
 <link rel="stylesheet" href='{% static "lib/node_modules/select2/dist/css/select2.min.css" %}'>
 <link rel="stylesheet" href='{% static "lib/node_modules/select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css" %}'>
+<!-- time -->
+<script src='{% static "lib/node_modules/daterangepicker/moment.min.js" %}'></script>
+<script src='{% static "lib/node_modules/daterangepicker/daterangepicker.js" %}'></script>
+<link rel="stylesheet" href='{% static "lib/node_modules/daterangepicker/daterangepicker.css" %}'>
 <!-- libreria -->
 <script src='{% static "js/logic_reports.js" %}'></script>
 {% endblock head %}
@@ -35,7 +39,9 @@
         <div class="row g-3">
           <div class="col-md-6">
             {{form.control|clabel}}
-            {{form.control}}
+            <div data-toggle="tooltip" data-placement="bottom" title="Por favor ingresa un número">
+              {{form.control}}
+            </div>
           </div>
           <div class="col-md-6">
             {{form.fecha_reporte|clabel}}
@@ -53,6 +59,7 @@
             {{form.entrada|clabel}}
             {{form.entrada}}
           </div>
+
           <div class="col-md-6">
             {{form.hora_entrada|clabel}}
             {{form.hora_entrada}}

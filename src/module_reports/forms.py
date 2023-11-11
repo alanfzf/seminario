@@ -9,7 +9,6 @@ ERROR_AGES =  "El formato debe ser ➡️ Nombres Apellidos: Edad, Otros Nombres
 
 class ReporteForm(forms.ModelForm):
 
-
     @register.filter(is_safe=True)
     def clabel(value):
         return value.label_tag(attrs={'class': 'form-label'})
@@ -35,6 +34,25 @@ class ReporteForm(forms.ModelForm):
             raise forms.ValidationError(ERROR_AGES)
         return data
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        fecha = cleaned_data.get('fecha_reporte')
+        salida = cleaned_data.get('hora_salida')
+        entrada = cleaned_data.get('hora_entrada')
+
+        if entrada and salida:
+            if fecha != salida.date():
+                raise forms.ValidationError(
+                    "La fecha del reporte no coincide con la hora de salida"
+                )
+            if salida > entrada:
+                raise forms.ValidationError(
+                    "La hora de salida no puede ser mayor a la hora de entrada"
+                )
+
+        return cleaned_data;
+
 
     class Meta:
         model = Reporte
@@ -44,7 +62,8 @@ class ReporteForm(forms.ModelForm):
             'control': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'type': 'number',
-                'min': '0'
+                'min': '0',
+                'placeholder': 'Dato numérico (Ej, 2560)'
             }),
             'fecha_reporte': forms.DateInput( 
                 format='%Y-%m-%d',
@@ -110,19 +129,23 @@ class ReporteForm(forms.ModelForm):
             'solicitantes': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
-                'spellcheck': "false"
+                'spellcheck': "false",
+                'placeholder': "Juan Caal, Pedro Caal..."
             }),
             'pacientes': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
+                'placeholder': 'Juan Caal: 30, Pedro Caal: 59...'
             }),
             'fallecidos': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
+                'placeholder': 'Juan Caal: 30, Pedro Caal: 59...'
             }),
             'escoltas': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3,
+                'placeholder': "Juan Caal, Pedro Caal..."
             }),
             'domicilios': forms.Textarea(attrs={
                 'class': 'form-control',

@@ -35,7 +35,9 @@
         <div class="row g-3">
           <div class="col-md-6">
             {{form.control|clabel}}
-            {{form.control}}
+            <div data-toggle="tooltip" data-placement="bottom" title="Por favor ingresa un número">
+              {{form.control}}
+            </div>
           </div>
           <div class="col-md-6">
             {{form.fecha_reporte|clabel}}

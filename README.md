@@ -49,4 +49,4 @@ crontab -e
 # Integrantes
 - Alan David González López
 - José Raúl Botzoc Mérida
-- Manuel Miguel Miguel
+- Manuel Miguel Miguel.
